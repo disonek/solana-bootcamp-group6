@@ -1,7 +1,7 @@
 import * as anchor from '@project-serum/anchor'
 import { useEffect, useMemo, useState } from 'react'
 import { TODO_PROGRAM_PUBKEY } from '../constants'
-import todoIDL from '../constants/todo.json'
+import { IDL as profileIdl } from '../constants/idl'
 import toast from 'react-hot-toast'
 import { SystemProgram } from '@solana/web3.js'
 import { utf8 } from '@project-serum/anchor/dist/cjs/utils/bytes'
@@ -23,7 +23,7 @@ export function useTodo() {
     const program = useMemo(() => {
         if (anchorWallet) {
             const provider = new anchor.AnchorProvider(connection, anchorWallet, anchor.AnchorProvider.defaultOptions())
-            return new anchor.Program(todoIDL, TODO_PROGRAM_PUBKEY, provider)
+            return new anchor.Program(profileIdl, TODO_PROGRAM_PUBKEY, provider)
         }
     }, [connection, anchorWallet])
 
@@ -58,7 +58,6 @@ export function useTodo() {
     }, [publicKey, program, transactionPending])
 
     const initializeUser = async () => {
-        console.log("Im here")
         if (program && publicKey) {
             try {
                 setTransactionPending(true)
@@ -75,7 +74,6 @@ export function useTodo() {
                 setInitialized(true)
                 toast.success('Successfully initialized user.')
             } catch (error) {
-                console.log('im here2')
                 console.log(error)
                 toast.error(error.toString())
             } finally {
@@ -85,10 +83,12 @@ export function useTodo() {
     }
 
     const addTodo = async () => {
+
+        log.console('here');
         if (program && publicKey) {
             try {
 
-                console.log('add to do')
+                log.console('here');
                 setTransactionPending(true)
                 const [profilePda, profileBump] = findProgramAddressSync([utf8.encode('USER_STATE'), publicKey.toBuffer()], program.programId)
                 const [todoPda, todoBump] = findProgramAddressSync([utf8.encode('TODO_STATE'), publicKey.toBuffer(), anchor.BN(lastTodo).toArrayLike(Buffer) ], program.programId)
@@ -99,6 +99,7 @@ export function useTodo() {
                     return
                 }
 
+                log.console('here');
                 await program.methods
                     .addTodo(content)
                     .accounts({
