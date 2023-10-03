@@ -12,7 +12,7 @@ export const WalletConnectProvider = ({ children }) => {
     // You can also provide a custom RPC endpoint.
     const endpoint = useMemo(() => {
         if (network === WalletAdapterNetwork.Devnet) {
-            return 'https://api.devnet.solana.com'
+            return 'https://frosty-morning-yard.solana-devnet.discover.quiknode.pro/bb5aeef7a1465e2e92a5ba517f8fd350a8c208c0/'
         }
 
         return clusterApiUrl(network)
