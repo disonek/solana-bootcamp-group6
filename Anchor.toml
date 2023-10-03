@@ -2,8 +2,12 @@
 seeds = false
 skip-lint = false
 
+[programs.devnet]
+todo = "3w3a64MegUHZuRRWP7xFyTzxxviKW7SM8WF7AmvYHW8h"
+
+
 [programs.localnet]
-solana_bootcamp_group6 = "BQkweE52J7zTjNNc45LAMsJtSFh23VwUmABiui9jVYpn"
+todo = "BQkweE52J7zTjNNc45LAMsJtSFh23VwUmABiui9jVYpn"
 
 [registry]
 url = "https://api.apr.dev"
