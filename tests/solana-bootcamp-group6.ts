@@ -38,7 +38,7 @@ describe("todo", () => {
 
   it("Is initialized!", async () => {
     await program.methods
-      .initialize()
+      .initializeUser()
       .accounts({
         authority: userKeypair.publicKey,
         userProfile: userProfilePda,

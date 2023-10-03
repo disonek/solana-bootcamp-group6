@@ -11,7 +11,7 @@ declare_id!("BQkweE52J7zTjNNc45LAMsJtSFh23VwUmABiui9jVYpn");
 pub mod todo {
     use super::*;
 
-    pub fn initialize(ctx: Context<InitializeUser>) -> Result<()> {
+    pub fn initialize_user(ctx: Context<InitializeUser>) -> Result<()> {
         let user_profile = &mut ctx.accounts.user_profile;
         user_profile.authority = ctx.accounts.authority.key();
         user_profile.last_todo = 0;

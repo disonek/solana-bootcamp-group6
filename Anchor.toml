@@ -9,7 +9,7 @@ solana_bootcamp_group6 = "BQkweE52J7zTjNNc45LAMsJtSFh23VwUmABiui9jVYpn"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
+cluster = "devnet"
 wallet = "/home/disonek/.config/solana/id.json"
 
 [scripts]

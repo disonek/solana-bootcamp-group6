@@ -15,7 +15,7 @@
     ],
     "instructions": [
       {
-        "name": "initialize",
+        "name": "initializeUser",
         "accounts": [
           {
             "name": "authority",

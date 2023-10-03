@@ -75,6 +75,7 @@ export function useTodo() {
                 setInitialized(true)
                 toast.success('Successfully initialized user.')
             } catch (error) {
+                console.log('im here2')
                 console.log(error)
                 toast.error(error.toString())
             } finally {
@@ -86,6 +87,8 @@ export function useTodo() {
     const addTodo = async () => {
         if (program && publicKey) {
             try {
+
+                console.log('add to do')
                 setTransactionPending(true)
                 const [profilePda, profileBump] = findProgramAddressSync([utf8.encode('USER_STATE'), publicKey.toBuffer()], program.programId)
                 const [todoPda, todoBump] = findProgramAddressSync([utf8.encode('TODO_STATE'), publicKey.toBuffer(), anchor.BN(profileAccount.lastTodo).toArrayLike(Buffer) ], program.programId)
