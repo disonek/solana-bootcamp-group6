@@ -91,7 +91,7 @@ export function useTodo() {
                 console.log('add to do')
                 setTransactionPending(true)
                 const [profilePda, profileBump] = findProgramAddressSync([utf8.encode('USER_STATE'), publicKey.toBuffer()], program.programId)
-                const [todoPda, todoBump] = findProgramAddressSync([utf8.encode('TODO_STATE'), publicKey.toBuffer(), anchor.BN(profileAccount.lastTodo).toArrayLike(Buffer) ], program.programId)
+                const [todoPda, todoBump] = findProgramAddressSync([utf8.encode('TODO_STATE'), publicKey.toBuffer(), anchor.BN(lastTodo).toArrayLike(Buffer) ], program.programId)
 
                 const content = prompt('Please input todo content')
                 if (!content) {
