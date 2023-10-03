@@ -30,7 +30,7 @@ export function useTodo() {
         console.log("findProfileAccounts1")
         
         const findProfileAccounts = async () => {
-            console.log("findProfileAccounts1", program.programId.toString(), publicKey.toString(), transactionPending)
+            //console.log("findProfileAccounts1", program.programId.toString(), publicKey.toString(), transactionPending)
             if (program && publicKey && !transactionPending) {
                 
                 try {
