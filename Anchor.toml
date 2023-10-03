@@ -1,8 +1,9 @@
 [features]
 seeds = false
 skip-lint = false
+
 [programs.localnet]
-solana_bootcamp_group6 = "4QAYAnQDAYqmV2Nqq2WKmMaCipmZYp1T3xibZoJ9vm8F"
+solana_bootcamp_group6 = "BQkweE52J7zTjNNc45LAMsJtSFh23VwUmABiui9jVYpn"
 
 [registry]
 url = "https://api.apr.dev"
@@ -13,3 +14,5 @@ wallet = "/home/disonek/.config/solana/id.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+devnet = "solana config set --url devnet"
+localnet = "solana config set --url localhost"
