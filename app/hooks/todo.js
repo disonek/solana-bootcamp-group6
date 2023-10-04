@@ -165,10 +165,16 @@ export function useTodo() {
                     })
                     .rpc()
                 toast.success('Successfully removed todo.')
+
+                console.log(todoIdx)
             } catch (error) {
                 console.log(error)
                 toast.error(error.toString())
             } finally {
+                //removeing todo from the list
+                const updatedTodos = todos.filter((_, index) => index !== todoIdx);
+                setTodos(updatedTodos)
+
                 setLoading(false)
                 setTransactionPending(false)
             }
