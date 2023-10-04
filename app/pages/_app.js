@@ -7,7 +7,7 @@ function MyApp({ Component, pageProps }) {
     return (
         <>
             <Head>
-                <title>Todo App</title>
+                <title>Todo App Group 6</title>
             </Head>
             <main>
                 <WalletConnectProvider>
