@@ -52,11 +52,17 @@
     padding: 10px 0px;
     margin-left: 15px;
   }
+  
 
 .mainContainer {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+}
+
+.dev{
+    color: rgb(81, 7, 207);
+    margin-left: 1rem;
 }
 
 @media (min-width: 640px) {
