@@ -1,10 +1,11 @@
-import * as anchor from '@coral-xyz/anchor'
+import * as anchor from '@project-serum/anchor'
 import { useEffect, useMemo, useState } from 'react'
 import { TODO_PROGRAM_PUBKEY } from '../constants'
 import { IDL as profileIdl } from '../constants/idl'
 import toast from 'react-hot-toast'
 import { SystemProgram } from '@solana/web3.js'
-import { utf8 } from '@coral-xyz/anchor/dist/cjs/utils/bytes'
+import { utf8 } from '@project-serum/anchor/dist/cjs/utils/bytes'
+import { findProgramAddressSync } from '@project-serum/anchor/dist/cjs/utils/pubkey'
 import { useAnchorWallet, useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { authorFilter } from '../utils'
 
@@ -18,6 +19,11 @@ export function useTodo() {
     const [todos, setTodos] = useState([])
     const [loading, setLoading] = useState(false)
     const [transactionPending, setTransactionPending] = useState(false)
+    const [input, setInput] = useState('')
+
+    const handleChange = (event) => {
+        setInput(event.target.value);
+    }
 
     const program = useMemo(() => {
         if (anchorWallet) {
@@ -27,29 +33,20 @@ export function useTodo() {
     }, [connection, anchorWallet])
 
     useEffect(() => {
-        console.log("findProfileAccounts1")
-        
         const findProfileAccounts = async () => {
-            //console.log("findProfileAccounts1", program.programId.toString(), publicKey.toString(), transactionPending)
             if (program && publicKey && !transactionPending) {
-                
                 try {
-                    console.log("findProfileAccounts2")
                     setLoading(true)
-                    const [profilePda, profileBump] = await anchor.web3.PublicKey.findProgramAddressSync([utf8.encode('USER_STATE'), publicKey.toBuffer()], program.programId)
+                    const [profilePda, profileBump] = await findProgramAddressSync([utf8.encode('USER_STATE'), publicKey.toBuffer()], program.programId)
                     const profileAccount = await program.account.userProfile.fetch(profilePda)
 
-
-                    console.log("findProfileAccounts profileAccount.lastTodo",profileAccount.lastTodo)
                     if (profileAccount) {
                         setLastTodo(profileAccount.lastTodo)
                         setInitialized(true)
 
                         const todoAccounts = await program.account.todoAccount.all([authorFilter(publicKey.toString())])
                         setTodos(todoAccounts)
-                        console.log("findProfileAccounts3")
                     } else {
-                        console.log("findProfileAccounts4")
                         setInitialized(false)
                     }
                 } catch (error) {
@@ -66,12 +63,10 @@ export function useTodo() {
     }, [publicKey, program, transactionPending])
 
     const initializeUser = async () => {
-
-       console.log("initializeUser")
         if (program && publicKey) {
             try {
                 setTransactionPending(true)
-                const [profilePda, profileBump] = anchor.web3.PublicKey.findProgramAddressSync([utf8.encode('USER_STATE'), publicKey.toBuffer()], program.programId)
+                const [profilePda, profileBump] = findProgramAddressSync([utf8.encode('USER_STATE'), publicKey.toBuffer()], program.programId)
 
                 const tx = await program.methods
                     .initializeUser()
@@ -92,27 +87,22 @@ export function useTodo() {
         }
     }
 
-    const addTodo = async () => {
-
-        console.log("addTodo1")
+    const addTodo = async (e) => {
+        e.preventDefault()
         if (program && publicKey) {
-            console.log("addTodo2")
             try {
-
-                console.log("addTodo3")
                 setTransactionPending(true)
-                const [profilePda, profileBump] = anchor.web3.PublicKey.findProgramAddressSync([utf8.encode('USER_STATE'), publicKey.toBuffer()], program.programId)
-                const [todoPda, todoBump] = anchor.web3.PublicKey.findProgramAddressSync([utf8.encode('TODO_STATE'), publicKey.toBuffer(), Uint8Array.from([lastTodo]) ], program.programId)
+                const [profilePda, profileBump] = findProgramAddressSync([utf8.encode('USER_STATE'), publicKey.toBuffer()], program.programId)
+                const [todoPda, todoBump] = findProgramAddressSync([utf8.encode('TODO_STATE'), publicKey.toBuffer(), Uint8Array.from([lastTodo])], program.programId)
 
-                const content = prompt('Please input todo content')
-                if (!content) {
+               // const content = prompt('Please input todo content')
+                if (!input) {
                     setTransactionPending(false)
                     return
                 }
 
-                console.log("addTodo4")
                 await program.methods
-                    .addTodo(content)
+                    .addTodo(input)
                     .accounts({
                         userProfile: profilePda,
                         todoAccount: todoPda,
@@ -126,6 +116,7 @@ export function useTodo() {
                 toast.error(error.toString())
             } finally {
                 setTransactionPending(false)
+                setInput('')
             }
         }
     }
@@ -135,7 +126,7 @@ export function useTodo() {
             try {
                 setTransactionPending(true)
                 setLoading(true)
-                const [profilePda, profileBump] = anchor.web3.PublicKey.findProgramAddressSync([utf8.encode('USER_STATE'), publicKey.toBuffer()], program.programId)
+                const [profilePda, profileBump] = findProgramAddressSync([utf8.encode('USER_STATE'), publicKey.toBuffer()], program.programId)
 
                 await program.methods
                     .markTodo(todoIdx)
@@ -162,7 +153,7 @@ export function useTodo() {
             try {
                 setTransactionPending(true)
                 setLoading(true)
-                const [profilePda, profileBump] = anchor.web3.PublicKey.findProgramAddressSync([utf8.encode('USER_STATE'), publicKey.toBuffer()], program.programId)
+                const [profilePda, profileBump] = findProgramAddressSync([utf8.encode('USER_STATE'), publicKey.toBuffer()], program.programId)
 
                 await program.methods
                     .removeTodo(todoIdx)
@@ -187,5 +178,5 @@ export function useTodo() {
     const incompleteTodos = useMemo(() => todos.filter((todo) => !todo.account.marked), [todos])
     const completedTodos = useMemo(() => todos.filter((todo) => todo.account.marked), [todos])
 
-    return { initialized, initializeUser, loading, transactionPending, completedTodos, incompleteTodos, addTodo, markTodo, removeTodo }
+    return { initialized, initializeUser, loading, transactionPending, completedTodos, incompleteTodos, addTodo, markTodo, removeTodo, handleChange, input }
 }
