@@ -29,7 +29,7 @@ const Home = () => {
                         Initialize
                     </button>
                 )}
-                <WalletMultiButton />
+                <WalletMultiButton /> <a className={styles.dev}>Change to devnet!</a>
             </div>
 
             <div className={styles.mainContainer}>
