@@ -1,16 +1,16 @@
 import styles from '../../styles/Todo.module.css'
 import { CalendarIcon, TrashIcon } from '@heroicons/react/outline'
 
-const TodoItem = ({ idx, content, marked, dateline, publicKey, action }) => {
+const TodoItem = ({ idx, content, marked, dateline, publicKey, action1, action2 }) => {
     const handleMarkTodo = () => {
         // Only allow unchecked todo to be marked
         if (marked) return
 
-        action(publicKey, idx)
+        action1(publicKey, idx)
     }
 
     const handleRemoveTodo = () => {
-        action(publicKey, idx)
+        action1(publicKey, idx)
     }
 
     return (
