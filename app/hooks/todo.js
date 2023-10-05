@@ -95,7 +95,7 @@ export function useTodo() {
                 const [profilePda, profileBump] = findProgramAddressSync([utf8.encode('USER_STATE'), publicKey.toBuffer()], program.programId)
                 const [todoPda, todoBump] = findProgramAddressSync([utf8.encode('TODO_STATE'), publicKey.toBuffer(), Uint8Array.from([lastTodo])], program.programId)
 
-               // const content = prompt('Please input todo content')
+                // const content = prompt('Please input todo content')
                 if (!input) {
                     setTransactionPending(false)
                     return
@@ -171,9 +171,6 @@ export function useTodo() {
                 console.log(error)
                 toast.error(error.toString())
             } finally {
-                //removeing todo from the list
-                const updatedTodos = todos.filter((_, index) => index !== todoIdx);
-                setTodos(updatedTodos)
 
                 setLoading(false)
                 setTransactionPending(false)
